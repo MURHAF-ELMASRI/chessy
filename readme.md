@@ -1,7 +1,7 @@
 # **chessy** &nbsp; <img src="./docs/chess.png" width="25px">
 
 multiplayer real-time **chess** game uses [node.js](https://nodejs.org/en/), [React](https://reactjs.org/) [Web-Socket/ws](https://github.com/websockets/ws), [firebase](https://firebase.google.com/), [material-ui](https://material-ui.com/) and [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd).<br> 
-<img src="https://cdn2.iconfinder.com/data/icons/nodejs-1/512/nodejs-512.png" width="25px"><img src="https://pics.freeicons.io/uploads/icons/png/6158480871552037069-512.png" width="25px"><img src="https://www.gstatic.com/devrel-devsite/prod/v1674d466be3b1154327dd11cf186e748303b1e92ae31ff35df0f5192fbd777ea/firebase/images/touchicon-180.png" width="25px"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/React.svg/1200px-React.svg.png" width="25px">
+<img src="https://cdn2.iconfinder.com/data/icons/nodejs-1/512/nodejs-512.png" width="25px"><img src="https://pics.freeicons.io/uploads/icons/png/6158480871552037069-512.png" width="25px"><img src="https://www.gstatic.com/devrel-devsite/prod/v1674d466be3b1154327dd11cf186e748303b1e92ae31ff35df0f5192fbd777ea/firebase/images/touchicon-180.png" width="25px"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/React.svg/1200px-React.svg.png" width="25px"><img src="https://user-images.githubusercontent.com/2182637/53611918-54c1ff80-3c24-11e9-9917-66ac3cef513d.png" width="25px">
 
 # **demo**
 
