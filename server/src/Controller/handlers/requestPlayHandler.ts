@@ -8,25 +8,29 @@ export default function requestPlayHandler({
   color,
 }: requestPlayParams) {
   const oppSocket = getClientSocket(clients, socket);
-  if (oppSocket) {
-    if (!oppSocket.opponent) {
-      oppSocket.opponent = socket;
-      socket.opponent = oppSocket.uid;
-      console.log("sending request");
-      oppSocket.send(
-        JSON.stringify({
-          msg: "request-play",
-          name: socket.name,
-          color,
-        })
-      );
-    } else
-      socket.send(
-        JSON.stringify({
-          msg: "error",
-          content: `${oppSocket.name} is busy`,
-        })
-      );
+
+  if (!oppSocket) {
+    throw new Error("")
+  }
+
+  if (!oppSocket.opponent) {
+    oppSocket.opponent = socket;
+    socket.opponent = oppSocket.uid;
+    console.log("sending request");
+    oppSocket.send(
+      JSON.stringify({
+        msg: "request-play",
+        name: socket.name,
+        color,
+      })
+    );
+  } else
+    socket.send(
+      JSON.stringify({
+        msg: "error",
+        content: `${oppSocket.name} is busy`,
+      })
+    );
   } else
     socket.send(
       JSON.stringify({
