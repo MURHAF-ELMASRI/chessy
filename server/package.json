@@ -2,9 +2,10 @@
   "name": "chessy_backend",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "./src/app.ts",
+  "type": "module",
   "scripts": {
-    "start": "ts-node-dev --respawn --transpile-only ./src/app.ts",
+    "start": "ts-node-dev --experimental-modules --respawn --transpile-only ./src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,7 +14,7 @@
   "dependencies": {
     "@types/ws": "^7.4.5",
     "firebase-admin": "^9.7.0",
-    "ws": "^7.4.5"
+    "ws": "^7.5.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.7",
