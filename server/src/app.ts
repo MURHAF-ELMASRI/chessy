@@ -1,12 +1,11 @@
-import webSocket from "ws";
+import webSocket, { MessageEvent } from "ws";
 import http from "http";
 import { verifyClient } from "./util/app/verifyClient";
 import { setUsersOffline } from "./util/app/setUsersOffline";
 import { controller } from "./Controller/controller";
 import { ExtendedRequest, ExtendedSocket } from "./@types";
 import decodeMessage from "./util/decodeMessage";
-import Message from "./@types/Message";
-import { ControllerParams } from "./@types/params/ControllerParams";
+import { closeHandler } from "./Controller/handlers";
 
 const server = http.createServer();
 const ws = new webSocket.Server({
@@ -32,7 +31,7 @@ ws.on("connection", (socket: ExtendedSocket, req: ExtendedRequest) => {
 
   socket.onmessage = async (messageEvent: MessageEvent) => {
     //TODO: handle error parser msg
-    const msg = decodeMessage(messageEvent.data);
+    const msg = decodeMessage(messageEvent.data as string);
 
     console.log("from ", req.socket.remoteAddress, msg.msg);
 
@@ -50,7 +49,11 @@ ws.on("connection", (socket: ExtendedSocket, req: ExtendedRequest) => {
 
   socket.onclose = () => {
     console.log("close the connection");
-    controller("close", socket);
+    try {
+      closeHandler({ socket });
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 });
 

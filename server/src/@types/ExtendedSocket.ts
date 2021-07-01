@@ -1,3 +1,3 @@
 import ExtendedObject from "./ExtendedObject";
-
-export default interface ExtendedSocket extends ExtendedObject, WebSocket {}
+import webSocket from "ws";
+export default interface ExtendedSocket extends ExtendedObject, webSocket {}
