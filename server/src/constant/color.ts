@@ -1,4 +1,4 @@
-export const color = {
+export const Color = {
   BLACK: false,
   WHITE: true,
 };

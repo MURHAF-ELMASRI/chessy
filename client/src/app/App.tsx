@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import Game from './components/Board/Game';
+import Game from '../components/Board/Game';
 import { Grid, Typography, Button } from '@material-ui/core';
-import SideWindow from './components/sideWindow/SideWindow';
-import useNotification from './hooks/useNotification';
-import DialogComponent from './components/DialogComponent';
-import NotificationComponent from './components/NotificationComponent';
-import useAuth from './hooks/useAuth';
-import useWebSocket from './hooks/useWebSocket';
+import SideWindow from '../components/sideWindow/SideWindow';
+import useNotification from '../hooks/useNotification';
+import DialogComponent from '../components/DialogComponent';
+import NotificationComponent from '../components/NotificationComponent';
+import useAuth from '../hooks/useAuth';
+import useWebSocket from '../hooks/useWebSocket';
 import windowClose from '@iconify-icons/mdi/window-close';
-import useDialog from './hooks/useDialog';
+import useDialog from '../hooks/useDialog';
 import { Icon } from '@iconify/react';
 import firebase from 'firebase';
 

@@ -162,11 +162,17 @@ function Game({
     setSelectedId("");
     handleLog(setLogs, board, src_i, src_j, dest_i, dest_j);
     if (turn !== "wait") setTurn(false);
+
+    const move = {
+      src: { i: src_i, j: src_j },
+      dest: { i: dest_i, j: dest_j },
+    };
+    
     webSocket.send(
       JSON.stringify({
         msg: "move",
         //TODO: change this to move{src:{i,j},dest:{i,j}}
-        move: { src_i, src_j, dest_i, dest_j },
+        move,
       })
     );
     if (dest_i === "0" && movedStone.type === "pawn") {

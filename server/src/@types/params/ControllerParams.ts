@@ -7,10 +7,10 @@ import {
   REQUEST_PLAY,
 } from "@constant/controller";
 
-type ControllerParams =
-  | REQUEST_PLAY
-  | CANCEL
-  | REJECT_PLAY
-  | MOVE
-  | CLOSE
-  | ACCEPT_PLAY;
+export type ControllerParams =
+  | typeof REQUEST_PLAY
+  | typeof CANCEL
+  | typeof REJECT_PLAY
+  | typeof MOVE
+  | typeof CLOSE
+  | typeof ACCEPT_PLAY;

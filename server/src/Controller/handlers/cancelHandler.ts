@@ -1,4 +1,4 @@
-import { ExtendedSocket } from "../../@types/ExtendedSocket";
+import ExtendedSocket from "../../@types/ExtendedSocket";
 
 export default function cancelHandler({ socket }: { socket: ExtendedSocket }) {
   //TODO: check losing

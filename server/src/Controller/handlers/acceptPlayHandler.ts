@@ -1,4 +1,4 @@
-import { ExtendedSocket } from "../../@types/ExtendedSocket";
+import ExtendedSocket from "../../@types/ExtendedSocket";
 import isObject from "../../util/isObject";
 
 export default function ({

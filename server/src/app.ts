@@ -6,6 +6,7 @@ import { controller } from "./Controller/controller";
 import { ExtendedRequest, ExtendedSocket } from "./@types";
 import decodeMessage from "./util/decodeMessage";
 import Message from "./@types/Message";
+import { ControllerParams } from "./@types/params/ControllerParams";
 
 const server = http.createServer();
 const ws = new webSocket.Server({
@@ -36,7 +37,7 @@ ws.on("connection", (socket: ExtendedSocket, req: ExtendedRequest) => {
     console.log("from ", req.socket.remoteAddress, msg.msg);
 
     try {
-      controller(msg.msg)();
+      controller(msg, socket, ws.clients);
     } catch (e) {
       socket.send(
         JSON.stringify({
@@ -49,7 +50,7 @@ ws.on("connection", (socket: ExtendedSocket, req: ExtendedRequest) => {
 
   socket.onclose = () => {
     console.log("close the connection");
-    controller("close")({ socket });
+    controller("close", socket);
   };
 });
 
