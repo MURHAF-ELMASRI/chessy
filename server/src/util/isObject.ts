@@ -1,5 +1,3 @@
-import ws from "ws";
-
-export default function isObject(varibale: any) {
-  return typeof varibale === "object" && varibale !== null;
+export default function isObject(variable: unknown): variable is object {
+  return !!variable && typeof variable === "object";
 }

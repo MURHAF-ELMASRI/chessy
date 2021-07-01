@@ -1,73 +1,60 @@
 import webSocket from "ws";
 import http from "http";
-import { URL } from "url";
-import contorler from "./controler";
-import { app } from "./config/firebaseApp";
+import controller from "./Controller/controller";
+import { verifyClient } from "./util/app/verifyClient";
 
-//! danger: this approuch is unscure with http connection
-const verifyClient: webSocket.VerifyClientCallbackAsync = async (info, cb) => {
-  const params = new URL(info.origin).searchParams;
-  const token = params.get["token"];
+import { setUsersOffline } from "./util/app/setUsersOffline";
 
-  if (!token) return cb(false, 401, "not authurized");
-
-  //check valid connection
-  const user = await app.auth().verifyIdToken(token);
-
-  if (user.uid) {
-    info.req.uid = user.uid;
-    info.req.name = user.name;
-    return cb(true);
-  } else {
-    cb(false, 500, "server error");
-  }
-};
+import { ExtendedRequest } from "./@types/ExtendedRequest";
+import { ExtendedObject } from "./@types/ExtendedObject";
+import { ExtendedSocket } from "./@types/ExtendedSocket";
 
 const server = http.createServer();
-
 const ws = new webSocket.Server({
   server,
   verifyClient,
 });
 
-app
-  .database()
-  .ref("/users/")
-  .get()
-  .then((snapshot) => {
-    snapshot.forEach(function (child) {
-      child.ref.update({
-        state: "offline",
-      });
-    });
-  })
-  .catch((e) => console.log(e.message));
+//set all users offline when server start
+setUsersOffline();
 
-ws.on("connection", (socket, req) => {
+function logConnection(req: ExtendedRequest) {
   console.log("-------------------------");
-  console.log("6 connecting from ", req.connection.remoteAddress);
+  console.log("connecting from ", req.socket.remoteAddress);
   console.log(req.name, req.uid);
   console.log("-------------------------");
+}
+
+ws.on("connection", (socket: ExtendedSocket, req: ExtendedRequest) => {
+  
+  logConnection(req);
 
   socket.uid = req.uid;
   socket.name = req.name;
 
-  socket.onmessage = async (msgJSON) => {
-    //TODO: handle error paser msg
-    const msg = JSON.parse(msgJSON.data);
-    console.log("from ", req.connection.remoteAddress, msg.msg);
-    controler[msg.msg]({ socket, server: ws, ...msg });
+  socket.onmessage = async (messageEvent: MessageEvent) => {
+    //TODO: handle error parser msg
+    const msg = JSON.parse(messageEvent.data).msg;
+    console.log("from ", req.socket.remoteAddress, msg.mgs);
+    if (controller[msg.msg])
+      controller[msg.msg]({ socket, clients: ws.clients, ...msg });
+    else {
+      console.log("bad request");
+      socket.send(
+        JSON.stringify({
+          msg: "error",
+          content: "you can't start new game",
+        })
+      );
+    }
   };
 
-  socket.onclose = (code, reason) => {
+  socket.onclose = () => {
     console.log("close the connection");
-    controler["close"]({ socket });
+    controller.close({ socket });
   };
 });
 
 server.listen(process.env.PORT || 8080, () =>
   console.log(`Server has started.`)
 );
-//when websocket close
-//set state for user of uid to offline
-// send new state to all users
