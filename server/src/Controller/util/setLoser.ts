@@ -1,11 +1,10 @@
 import { ExtendedSocket } from "../../@types/ExtendedSocket";
 import { app } from "../../config/firebaseApp";
-import isObject from "../isObject";
 import admin from "firebase-admin";
+import isObject from "../../util/isObject";
 
 export function setLoser(socket: ExtendedSocket) {
   if (isObject(socket.opponent)) {
-    socket.opponent.send(JSON.stringify({ msg: "win" }));
     if (socket.uid)
       app
         .database()
@@ -22,6 +21,8 @@ export function setLoser(socket: ExtendedSocket) {
         .update({
           win: admin.database.ServerValue.increment(1),
         });
+
+    socket.opponent.send(JSON.stringify({ msg: "win" }));
     socket.opponent.opponent = "";
   }
 }

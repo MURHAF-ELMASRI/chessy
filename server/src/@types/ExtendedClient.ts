@@ -1,6 +1,6 @@
-import WebSocket from "ws";
-import { ExtendedObject } from "./ExtendedObject";
+import ExtendedObject from "./ExtendedObject";
+import ExtendedSocket from "./ExtendedSocket";
 
-export interface ExtendedClient
-  extends WebSocket.Server.clients,
+export default interface ExtendedClient
+  extends Set<ExtendedSocket>,
     ExtendedObject {}

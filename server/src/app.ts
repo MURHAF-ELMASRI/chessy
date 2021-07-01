@@ -1,13 +1,11 @@
 import webSocket from "ws";
 import http from "http";
-import controller from "./Controller/controller";
 import { verifyClient } from "./util/app/verifyClient";
-
 import { setUsersOffline } from "./util/app/setUsersOffline";
-
-import { ExtendedRequest } from "./@types/ExtendedRequest";
-import { ExtendedObject } from "./@types/ExtendedObject";
-import { ExtendedSocket } from "./@types/ExtendedSocket";
+import { controller } from "./Controller/controller";
+import { ExtendedRequest, ExtendedSocket } from "./@types";
+import decodeMessage from "./util/decodeMessage";
+import Message from "./@types/Message";
 
 const server = http.createServer();
 const ws = new webSocket.Server({
@@ -26,7 +24,6 @@ function logConnection(req: ExtendedRequest) {
 }
 
 ws.on("connection", (socket: ExtendedSocket, req: ExtendedRequest) => {
-  
   logConnection(req);
 
   socket.uid = req.uid;
@@ -34,16 +31,17 @@ ws.on("connection", (socket: ExtendedSocket, req: ExtendedRequest) => {
 
   socket.onmessage = async (messageEvent: MessageEvent) => {
     //TODO: handle error parser msg
-    const msg = JSON.parse(messageEvent.data).msg;
-    console.log("from ", req.socket.remoteAddress, msg.mgs);
-    if (controller[msg.msg])
-      controller[msg.msg]({ socket, clients: ws.clients, ...msg });
-    else {
-      console.log("bad request");
+    const msg = decodeMessage(messageEvent.data);
+
+    console.log("from ", req.socket.remoteAddress, msg.msg);
+
+    try {
+      controller(msg.msg)();
+    } catch (e) {
       socket.send(
         JSON.stringify({
           msg: "error",
-          content: "you can't start new game",
+          content: e.message,
         })
       );
     }
@@ -51,7 +49,7 @@ ws.on("connection", (socket: ExtendedSocket, req: ExtendedRequest) => {
 
   socket.onclose = () => {
     console.log("close the connection");
-    controller.close({ socket });
+    controller("close")({ socket });
   };
 });
 

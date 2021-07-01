@@ -1,4 +1,4 @@
-import { ExtendedSocket } from "../../@types/ExtendedSocket";
+import ExtendedSocket from "../../@types/ExtendedSocket";
 import { app } from "../../config/firebaseApp";
 import { setLoser } from "../util/setLoser";
 

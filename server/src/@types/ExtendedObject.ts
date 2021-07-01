@@ -1,8 +1,7 @@
-import { Socket } from "net";
-import { ExtendedSocket } from "./ExtendedSocket";
+import ExtendedSocket from "./ExtendedSocket";
 
-export type ExtendedObject = {
+export default interface ExtendedObject {
   uid?: string;
   name?: string;
   opponent?: string | ExtendedSocket;
-};
+}
