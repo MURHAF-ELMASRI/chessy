@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "./src/app.ts",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "start": "ts-node-dev --experimental-modules --respawn --transpile-only ./src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"

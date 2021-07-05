@@ -1,5 +1,5 @@
 import { Move } from "src/@types/Move";
-import { encodeMessage } from "src/util/encodeMessage";
+import encodeMessage from "../../util/encodeMessage";
 import ExtendedSocket from "../../@types/ExtendedSocket";
 import isObject from "../../util/isObject";
 

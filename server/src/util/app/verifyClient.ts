@@ -1,7 +1,7 @@
 import { app } from "../../config/firebaseApp";
 import webSocket from "ws";
 import { URL } from "url";
-import { RequestBody } from "../../@types/ExtendedRequest";
+import { ExtendedRequest } from "src/@types";
 
 //! danger: this approuch is unscure with http connection
 export const verifyClient: webSocket.VerifyClientCallbackAsync = async (
@@ -18,8 +18,8 @@ export const verifyClient: webSocket.VerifyClientCallbackAsync = async (
     .auth()
     .verifyIdToken(token)
     .then((user) => {
-      (info.req as RequestBody).uid = user.uid;
-      (info.req as RequestBody).name = user.name;
+      (info.req as ExtendedRequest).uid = user.uid;
+      (info.req as ExtendedRequest).name = user.name;
       return cb(true);
     })
     .catch((e) => {

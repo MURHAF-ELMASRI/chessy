@@ -25,7 +25,7 @@ function logConnection(req: ExtendedRequest) {
 
 ws.on("connection", (socket: ExtendedSocket, req: ExtendedRequest) => {
   logConnection(req);
-
+  //TODO : update user state to online
   socket.uid = req.uid;
   socket.name = req.name;
 
