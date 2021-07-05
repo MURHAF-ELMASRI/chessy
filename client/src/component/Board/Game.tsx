@@ -2,7 +2,7 @@ import { useState, useEffect, memo } from "react";
 import styled from "styled-components";
 import initalData from "./initalBoard";
 import { move } from "./MoveAlgo";
-import Square from "./Square";
+import Square from "../square/Square";
 import { DragDropContext } from "react-beautiful-dnd";
 import moveStone from "./moveStone";
 import useDialog from "../../core/store/reducer/choseStoneColorDialog";

@@ -1,9 +1,8 @@
 import Game from "./component/Board/Game";
-import { Grid, Typography, Button, makeStyles } from "@material-ui/core";
+import { Grid, makeStyles } from "@material-ui/core";
 import SideWindow from "./component/sideWindow/SideWindow";
 import DialogComponent from "./container/dialog";
 import NotificationComponent from "./component/NotificationComponent";
-import windowClose from "@iconify-icons/mdi/window-close";
 import Logs from "@component/Logs";
 import registerUser from "@services/registerUser";
 

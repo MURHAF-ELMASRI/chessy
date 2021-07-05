@@ -1,7 +1,7 @@
 import styled  from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
 import { Icon } from '@iconify/react';
-import  {type}  from './ChessIcons';
+import  {type}  from '../Board/ChessIcons';
 const StoneItem = styled.div`
     color: ${(props) => (props.white ? '#FDFDFD' : 'black')};
     position: relative;

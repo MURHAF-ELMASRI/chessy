@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { Droppable } from 'react-beautiful-dnd';
-import Stone from './Stone';
+import Stone from '../stone/Stone';
 
 //ToDo: optimize the component to not render if there is no change
 //ToDo: make item droppable and the stone draggable
