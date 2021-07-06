@@ -36,7 +36,17 @@ const gameStateSlice = createSlice({
       gameConnection.sendMessageToServer({ msg: "move", move: action.payload });
     },
     rejectGame: (state, action: PayloadAction<undefined>) => {
-      gameConnection.sendMessageToServer({ msg: "rejectGame" });
+      gameConnection.sendMessageToServer({ msg: "reject-game" });
+    },
+    requestPlay: (
+      state,
+      action: PayloadAction<{ opponentUID: string; color: Color }>
+    ) => {
+      gameConnection.sendMessageToServer({
+        msg: "request-play",
+        opponentUID: action.payload.opponentUID,
+        color: action.payload.color,
+      });
     },
   },
 });
@@ -48,5 +58,6 @@ export const {
   acceptGame,
   sendMove,
   rejectGame,
+  requestPlay,
 } = gameStateSlice.actions;
 export const gameStateReducer = gameStateSlice.reducer;

@@ -13,32 +13,27 @@ import { stoneIcons } from "@icons/stoneIcons";
 import windowClose from "@iconify-icons/mdi/window-close";
 
 //states
-import { useAppSelector } from "src/hooks/useAppSelector";
 import { useAppDispatch } from "@hooks/useAppDispatch";
-import { showWaitingNotification } from "@store/reducer/notification";
 import { hideDialog } from "@store/reducer/dialog";
 //util
-import encodeMessage from "@util/encodeMessage";
+import { requestPlay } from "@store/reducer/gameState";
+import { Color } from "@type/Color";
+import { showActionNotification } from "@store/reducer/notification";
 
 interface Props {
-  open: boolean;
+  opponentUID: string;
+  color: Color;
 }
 
-const StoneOption = () => {
+const StoneOption = ({ opponentUID, color }: Props) => {
   const dispatch = useAppDispatch();
-  const [webSocket] = useAppSelector((state) => [state.webSocket.webSocket]);
-
   const handleChoseColor = useCallback((color) => {
-    webSocket?.send(
-      encodeMessage({
-        msg: "request-play",
-        //TODO: get opponent uid from state and put it here
-        // opponentUID: user.uid,
+    dispatch(
+      requestPlay({
+        opponentUID,
         color,
       })
     );
-    dispatch(showWaitingNotification("waiting for player"));
-    dispatch(hideDialog());
   }, []);
 
   return (
@@ -53,9 +48,8 @@ const StoneOption = () => {
   );
 };
 
-const ChooseStoneColorDialog = ({ open }: Props) => {
+const ChooseStoneColorDialog = ({ open }: Props & { open: boolean }) => {
   const dispatch = useAppDispatch();
-
   const handleClose = useCallback(() => dispatch(hideDialog()), []);
 
   return (
@@ -76,3 +70,6 @@ const ChooseStoneColorDialog = ({ open }: Props) => {
 };
 
 export default memo(ChooseStoneColorDialog);
+function showWaitingNotification(): any {
+  throw new Error("Function not implemented.");
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect, memo } from "react";
 import styled from "styled-components";
-import initalData from "./initalBoard";
+import initialData from "./initalBoard";
 import { move } from "./MoveAlgo";
 import Square from "../square/Square";
 import { DragDropContext } from "react-beautiful-dnd";
@@ -247,13 +247,13 @@ function Game({
 
   useEffect(() => {
     if (startGame) {
-      setBoard(displayBoard(initalData, player));
+      setBoard(displayBoard(initialData, player));
       setStartGame(false);
     }
   }, [startGame]);
 
   useEffect(() => {
-    setBoard(displayBoard(initalData, player));
+    setBoard(displayBoard(initialData, player));
   }, []);
 
   useEffect(() => {

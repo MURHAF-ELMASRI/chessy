@@ -7,10 +7,12 @@ interface InitialState {
   name?: string;
   color?: Color;
   opponentName?: string;
+  uid: string;
 }
 
 const initialState: InitialState = {
   dialogType: "",
+  uid: "",
 };
 
 interface RequestPlay {
@@ -22,8 +24,11 @@ const dialogSlice = createSlice({
   name: "dialog",
   initialState,
   reducers: {
-    showChooseStoneColorDialog: (state, action: PayloadAction<string>) => {
-      state.name = action.payload;
+    showChooseStoneColorDialog: (
+      state,
+      action: PayloadAction<{ uid: string }>
+    ) => {
+      state.uid = action.payload.uid;
       state.dialogType = "chooseStoneColor";
     },
 
@@ -34,6 +39,9 @@ const dialogSlice = createSlice({
       state.opponentName = action.payload.opponentName;
       state.color = action.payload.color;
     },
+    showCancelConfirmationDialog: (state, action: PayloadAction<undefined>) => {
+      state.dialogType = "cancelConfirmation";
+    },
 
     hideDialog: (state, action: PayloadAction<undefined>) => {
       state.dialogType = "";
@@ -43,6 +51,10 @@ const dialogSlice = createSlice({
   },
 });
 
-export const { showChooseStoneColorDialog, showReplacePawnDialog, hideDialog } =
-  dialogSlice.actions;
+export const {
+  showChooseStoneColorDialog,
+  showReplacePawnDialog,
+  hideDialog,
+  showCancelConfirmationDialog,
+} = dialogSlice.actions;
 export const dialogReducer = dialogSlice.reducer;

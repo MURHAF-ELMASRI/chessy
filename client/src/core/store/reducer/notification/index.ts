@@ -13,9 +13,7 @@ const initialState: InitialState = {
 };
 
 //payload interface
-interface ActionNotificationPayload {
-  notificationType: ActionNotificationTypes;
-}
+type ActionNotificationPayload = ActionNotificationTypes;
 
 interface ActionLessNotificationPayload {
   notificationType: ActionLessNotificationTypes;
@@ -30,7 +28,7 @@ const notificationSlice = createSlice({
       state,
       action: PayloadAction<ActionNotificationPayload>
     ) => {
-      state.notificationType = action.payload.notificationType;
+      state.notificationType = action.payload;
     },
     showActionLessNotification: (
       state,

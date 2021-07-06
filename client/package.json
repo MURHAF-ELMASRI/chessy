@@ -20,6 +20,7 @@
     "@types/react-redux": "^7.1.16",
     "clone-deep": "^4.0.1",
     "firebase": "^8.5.0",
+    "immer": "^9.0.5",
     "react": "^17.0.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^17.0.1",

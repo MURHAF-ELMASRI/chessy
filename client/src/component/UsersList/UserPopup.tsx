@@ -1,27 +1,20 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { userType } from "../../types";
+import UserAvatar from "../UserAvatar";
 
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { Icon } from "@iconify/react";
-import windowClose from "@iconify-icons/mdi/window-close";
-
-import useWebSocket from "../../core/store/services/webSocket";
-
-import knight from "@iconify-icons/fa-solid/chess-knight";
-import useNotification from "../../core/store/reducer/notification";
-import useDialog from "../../core/store/reducer/choseStoneColorDialog";
 import {
   Card,
   CardHeader,
   CardContent,
   CardActions,
-  Avatar,
   Typography,
   Button,
-  IconButton,
-  Tooltip,
 } from "@material-ui/core";
+
+import { useAppSelector } from "@hooks/useAppSelector";
+import { showChooseStoneColorDialog } from "@store/reducer/dialog";
+import { useAppDispatch } from "@hooks/useAppDispatch";
+import { User } from "@type/User";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -31,21 +24,28 @@ const useStyle = makeStyles((theme) => ({
   avatar: {
     backgroundColor: "#FFC83D",
   },
-  bottom: {},
 }));
-//what to display in notification*
 
+interface Props {
+  user: User;
+  setOpen: (arg0: boolean) => void;
+  setKeep: (arg0: boolean) => void;
+}
 
 //TODO: handle the stop case
-function UserInfo({ user, setOpen, setKeep }) {
+
+const UserInfo: React.FC<Props> = ({ user, setKeep }) => {
   const classes = useStyle();
-  const { webSocket } = useWebSocket();
-  const { setNoti, noti } = useNotification();
-  const { setDialogState } = useDialog();
-  function handlePlay() {
-    //show chose stone color dialog
+  const dispatch = useAppDispatch();
+
+  const notificationType = useAppSelector(
+    (state) => state.notification.notificationType
+  );
+
+  const handlePlay = useCallback(() => {
+    dispatch(showChooseStoneColorDialog({ uid: user.uid }));
     setKeep(false);
-  }
+  }, []);
 
   return (
     <Card
@@ -55,13 +55,7 @@ function UserInfo({ user, setOpen, setKeep }) {
     >
       <CardHeader
         avatar={
-          user.photoURL ? (
-            <Avatar src={user.photoURL} alt={user.displayName} />
-          ) : (
-            <Avatar className={classes.avatar}>
-              {user.displayName && user.displayName[0]}
-            </Avatar>
-          )
+          <UserAvatar photoURL={user.photoURL} displayName={user.displayName} />
         }
         title={user.displayName ? user.displayName : ""}
         subheader={user.email ? user.email : ""}
@@ -78,7 +72,7 @@ function UserInfo({ user, setOpen, setKeep }) {
       <CardActions>
         {user.state === "online" && (
           <Button
-            disabled={noti.severity === "info" && noti.open}
+            disabled={notificationType === "info"}
             onClick={() => handlePlay()}
             color="primary"
             variant="contained"
@@ -89,10 +83,6 @@ function UserInfo({ user, setOpen, setKeep }) {
       </CardActions>
     </Card>
   );
-}
-
-UserInfo.prototype = {
-  user: userType,
 };
 
 export default UserInfo;
