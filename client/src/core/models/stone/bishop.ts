@@ -9,6 +9,7 @@ export class bishop extends stone {
       id,
       color,
       MoveRules.antiDiagonal | MoveRules.diagonal,
+      "bishop",
       stoneIcons.bishop
     );
   }

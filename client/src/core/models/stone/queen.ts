@@ -13,6 +13,7 @@ export class queen extends stone {
         MoveRules.vertical |
         MoveRules.diagonal |
         MoveRules.antiDiagonal,
+      "queen",
       stoneIcons.queen
     );
   }

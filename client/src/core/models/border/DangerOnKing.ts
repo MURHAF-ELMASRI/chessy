@@ -1,37 +1,25 @@
-import moveStone from '../../services/GameLogic/moveStone';
-import dangerOnStone from '../../services/GameLogic/dangerOnStone';
-import cloneDeep from 'clone-deep';
+import moveStone from "./moveStone";
+import { cloneDeep } from "lodash";
+import { isInRange } from "./isInRange";
+import { square } from "@models/square";
+import { Position } from "@type/Position";
+import IsDangerOnStone from "./dangerOnStone";
 
-//this utility function is to check if any  openent rock
+//this utility function is to check if any  opponent rock
 //could make danger on the king
-//it answer the question : Is there any danger by the oponent if a stone go from src to dest
+//it answer the question : Is there any danger by the opponent if a stone go from src to dest
 
-//how : suppose the stone went the the targeted square ---> check if there is any danger of king
+//how : suppose the stone went the the targeted square --then-> check if there is any danger of king
 
-export default function 
-
-function findKing(board, kingColor) {
-    for (let i = 0; i < board.length; i++) {
-        for (let j = 0; j < board[i].length; j++) {
-            const x = board[i][j];
-            if (
-                x.stone &&
-                x.stone.color === kingColor &&
-                x.stone.type === 'king'
-            )
-                return [i, j];
-        }
-    }
+export default function DangerOnKing(
+  board: square[][],
+  src: Position,
+  dest: Position,
+  kingPosition: Position
+) {
+  if (!isInRange(dest.i, dest.j)) return false;
+  //find the position of the king
+  const newBord = cloneDeep(board);
+  moveStone(newBord, src, dest);
+  return IsDangerOnStone(newBord, kingPosition);
 }
-function inRange(i, j) {
-    return i >= 0 && j >= 0 && i < 8 && j < 8;
-}
-/**
- * @typedef {{id:String,color:Boolean,stone?:{id:Number,color:Boolean,type:String}}} square
- * @param {Array<square[]>} board
- * @param {*} src_i
- * @param {*} src_j
- * @param {*} dest_i
- * @param {*} dest_j
- * @returns {Boolean}
- */

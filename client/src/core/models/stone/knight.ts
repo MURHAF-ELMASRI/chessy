@@ -6,7 +6,7 @@ import { MoveRules } from "./MoveRules";
 
 export class knight extends stone {
   constructor(readonly id: number, readonly color: Color) {
-    super(id, color, MoveRules.knight, stoneIcons.knight);
+    super(id, color, MoveRules.knight, "knight", stoneIcons.knight);
   }
 }
 export default knight;

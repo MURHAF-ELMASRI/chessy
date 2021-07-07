@@ -10,6 +10,7 @@ export class rook extends stone {
       id,
       color,
       MoveRules.horizontal | MoveRules.vertical,
+      "rook",
       stoneIcons.rook
     );
   }
