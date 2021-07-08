@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Color } from "@type/Color";
 import { DialogType } from "@type/DialogTypes";
+import { Position } from "@type/Position";
 
 interface InitialState {
   dialogType: DialogType | "";
@@ -8,6 +9,7 @@ interface InitialState {
   color?: Color;
   opponentName?: string;
   uid: string;
+  pawnPosition?: Position;
 }
 
 const initialState: InitialState = {
@@ -32,8 +34,9 @@ const dialogSlice = createSlice({
       state.dialogType = "chooseStoneColor";
     },
 
-    showReplacePawnDialog: (state, action: PayloadAction<undefined>) => {
+    showReplacePawnDialog: (state, action: PayloadAction<Position>) => {
       state.dialogType = "replacePawn";
+      state.pawnPosition = action.payload;
     },
     showRequestPlayDialog: (state, action: PayloadAction<RequestPlay>) => {
       state.opponentName = action.payload.opponentName;

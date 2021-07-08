@@ -18,7 +18,9 @@ const StoneOption = () => {
   const dispatch = useAppDispatch();
   const handleClick = useCallback((e) => {
     dispatch(hideDialog());
+
     //TODO: change the stone of the board
+    //TODO: dispatch logs
     // setBoard((prev) => {
     //   const newState = [...prev];
     //   newState[dest_i][dest_j].stone.type = e;

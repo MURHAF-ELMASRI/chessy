@@ -238,6 +238,4 @@ export function pawnMove(
   if (addToValArray(board, src, { i: src.i - 1, j: src.j }, stoneColor, val)) {
     addToValArray(board, src, { i: src.i - 2, j: src.j }, stoneColor, val);
   }
-
-  return val;
 }

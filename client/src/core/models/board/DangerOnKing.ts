@@ -11,7 +11,7 @@ import IsDangerOnStone from "./dangerOnStone";
 
 //how : suppose the stone went the the targeted square --then-> check if there is any danger of king
 
-export default function DangerOnKing(
+export default function dangerOnKing(
   board: square[][],
   src: Position,
   dest: Position,

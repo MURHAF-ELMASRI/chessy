@@ -1,4 +1,4 @@
-import Game from "./component/Board/Game";
+import Game from "./container/Game";
 import { Grid, makeStyles } from "@material-ui/core";
 import SideWindow from "./container/SideWindow/SideWindow";
 import DialogComponent from "./container/Dialog";

@@ -1,6 +1,7 @@
+import { setMoveMessage } from "@store/reducer/gameState";
+import { showActionLessNotification } from "@store/reducer/notification";
 import store from "@store/store";
 import decodeMessage from "@util/decodeMessage";
-import { showActionLessNotification } from "../../reducer/notification";
 
 export function initializeWebSocket(url: string): WebSocket {
   const webSocket = new WebSocket(url);
@@ -64,6 +65,9 @@ export function initializeWebSocket(url: string): WebSocket {
             content: "Congrats you win 💪🥳🎉",
           })
         );
+        break;
+      case "move":
+        store.dispatch(setMoveMessage(receivedMessage.move));
         break;
       default:
         store.dispatch(

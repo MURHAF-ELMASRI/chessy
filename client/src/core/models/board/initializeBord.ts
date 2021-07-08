@@ -62,8 +62,11 @@ const whiteStoneObjects = [
   MakeStoneObject("knight", 31, color.white),
   MakeStoneObject("rook", 32, color.white),
 ];
-
-export const initializeBord = () => [
+export const initializeBord = (playerColor: Color) => {
+  if (playerColor === color.white) return initialBoard;
+  else return initialBoard.reverse().map((e) => e.reverse().map((e) => e));
+};
+const initialBoard = [
   [
     new square("a8", color.white, blackStoneObjects[0]),
     new square("b8", color.black, blackStoneObjects[1]),

@@ -8,6 +8,7 @@ interface InitialState {
   isPlaying: boolean;
   playingColor: Color;
   isPlayerTurn: boolean;
+  moveMessage?: Move;
 }
 
 const initialState: InitialState = {
@@ -48,6 +49,14 @@ const gameStateSlice = createSlice({
         color: action.payload.color,
       });
     },
+    setMoveMessage: (state, action: PayloadAction<Move>) => {
+      state.moveMessage = action.payload;
+    },
+    sendLose: (state, action: PayloadAction<undefined>) => {
+      gameConnection.sendMessageToServer({
+        msg: "lose",
+      });
+    },
   },
 });
 
@@ -59,5 +68,7 @@ export const {
   sendMove,
   rejectGame,
   requestPlay,
+  setMoveMessage,
+  sendLose,
 } = gameStateSlice.actions;
 export const gameStateReducer = gameStateSlice.reducer;
