@@ -1,9 +1,5 @@
 import React from "react";
-import styled, { StyledFunction } from "styled-components";
-import { Droppable } from "react-beautiful-dnd";
 import Stone from "../stone/Stone";
-import { Color } from "@type/Color";
-import { SquareID } from "@type/SquareID";
 import { useCallback } from "react";
 import { square } from "@models/square";
 import { Position } from "@type/Position";
@@ -23,12 +19,12 @@ const Square = ({ squareObject, handleClick, position, selected }: Props) => {
 
   return (
     <SquareItem
-      color="{3243}"
+      color2={squareObject.color}
       selected={selected}
       onClick={handleSquareClick}
     >
       {squareObject.stone && (
-        <Stone handleClick={handleSquareClick} stone={squareObject} />
+        <Stone handleClick={handleSquareClick} stone={squareObject.stone} />
       )}
     </SquareItem>
   );
