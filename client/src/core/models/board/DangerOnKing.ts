@@ -1,8 +1,8 @@
 import moveStone from "./moveStone";
 import { cloneDeep } from "lodash";
 import { isInRange } from "./isInRange";
-import { square } from "@models/square";
-import { Position } from "@type/Position";
+import { square } from "src/core/models/square";
+import { Position } from "src/types/Position";
 import IsDangerOnStone from "./dangerOnStone";
 
 //this utility function is to check if any  opponent rock
@@ -21,5 +21,8 @@ export default function dangerOnKing(
   //find the position of the king
   const newBord = cloneDeep(board);
   moveStone(newBord, src, dest);
+
+  if (src.i === kingPosition.i && src.j === kingPosition.j)
+    return IsDangerOnStone(newBord, dest);
   return IsDangerOnStone(newBord, kingPosition);
 }

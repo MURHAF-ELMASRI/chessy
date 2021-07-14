@@ -1,5 +1,4 @@
-import { ExtendedClient, ExtendedSocket } from "src/@types";
-import ExtendedClients from "src/@types/ExtendedClient";
+import { ExtendedSocket, ExtendedClients } from "src/@types";
 import Message from "src/@types/Message";
 import { ControllerParams } from "src/@types/params/ControllerParams";
 import {
@@ -9,6 +8,7 @@ import {
   MOVE,
   REJECT_PLAY,
   REQUEST_PLAY,
+  LOSE,
 } from "../constant/controller";
 
 import {
@@ -18,6 +18,7 @@ import {
   moveHandler,
   closeHandler,
   acceptPlayHandler,
+  setLoserHandler,
 } from "./handlers";
 
 export const controller = (
@@ -31,7 +32,7 @@ export const controller = (
         clients,
         socket,
         opponentUID: msg.opponentUID,
-        color: msg.color,
+        playerColor: msg.playerColor,
       });
     case CANCEL:
       return cancelHandler({ socket });
@@ -45,6 +46,8 @@ export const controller = (
     case CLOSE:
       return closeHandler({ socket });
     case ACCEPT_PLAY:
-      return acceptPlayHandler({ socket, color: msg.color });
+      return acceptPlayHandler({ socket });
+    case LOSE:
+      return setLoserHandler({ socket });
   }
 };

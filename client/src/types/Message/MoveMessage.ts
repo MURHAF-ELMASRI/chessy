@@ -1,4 +1,4 @@
-import { Move } from "@type/Move";
+import { Move } from "src/types/Move";
 
 export interface MoveMessage {
   msg: "move";

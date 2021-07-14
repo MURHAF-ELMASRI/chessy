@@ -1,4 +1,4 @@
-import ExtendedSocket from "../../@types/ExtendedSocket";
+import ExtendedSocket from "src/@types/ExtendedSocket";
 import isObject from "../../util/isObject";
 
 export default function rejectPlayHandler({
@@ -6,11 +6,11 @@ export default function rejectPlayHandler({
 }: {
   socket: ExtendedSocket;
 }) {
-  if (isObject(socket.opponent) && isObject(socket.opponent.opponent)) {
+  if (isObject(socket.opponent)) {
     socket.opponent.send(
-      JSON.stringify({ msg: "reject-play", name: socket.name })
+      JSON.stringify({ msg: "reject-play", displayName: socket.displayName })
     );
-    socket.opponent.opponent = "";
+    socket.opponent.opponent = undefined;
   }
-  socket.opponent = "";
+  socket.opponent = undefined;
 }

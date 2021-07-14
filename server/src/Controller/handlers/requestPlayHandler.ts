@@ -1,28 +1,35 @@
 import { getClientSocket } from "../../util/getClientSocket";
-import RequestPlayParams from "../../@types/params/RequestPlayParams";
-
+import RequestPlayParams from "src/@types/params/RequestPlayParams";
+import isObject from "../../util/isObject";
 export default function requestPlayHandler({
   socket,
   clients,
   opponentUID,
-  color,
+  playerColor,
 }: RequestPlayParams) {
-  const oppSocket = getClientSocket(clients, socket);
+  if (isObject(socket.opponent))
+    throw new Error(`${socket.opponent.displayName} is busy`);
+
+  const oppSocket = getClientSocket(clients, opponentUID);
 
   if (!oppSocket) {
     throw new Error(`${opponentUID} is not connected`);
   }
 
-  if (oppSocket.opponent) {
-    throw new Error(`${oppSocket.name} is busy`);
-  }
   oppSocket.opponent = socket;
   socket.opponent = oppSocket.uid;
+  socket.playerColor = playerColor;
+  console.log(
+    "send request to player ",
+    oppSocket.displayName,
+    oppSocket.uid,
+    socket.playerColor
+  );
   oppSocket.send(
     JSON.stringify({
       msg: "request-play",
-      name: socket.name,
-      color,
+      displayName: socket.displayName,
+      playerColor,
     })
   );
 }

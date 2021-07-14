@@ -1,19 +1,18 @@
-import { Color } from "@constant/color";
 import {
   ACCEPT_PLAY,
   CANCEL,
   CLOSE,
+  LOSE,
   MOVE,
   REJECT_PLAY,
   REQUEST_PLAY,
 } from "@constant/controller";
-import { Move } from "./Move";
-import { ControllerParams } from "./params/ControllerParams";
+import { Color } from "./Color";
 
 type RequestPlayMessage = {
   msg: typeof REQUEST_PLAY;
   opponentUID: "string";
-  color: boolean;
+  playerColor: Color;
 };
 
 type CancelMessage = {
@@ -44,7 +43,9 @@ type CloseMessage = {
 
 type AcceptPlayMessage = {
   msg: typeof ACCEPT_PLAY;
-  color: boolean;
+};
+type LoseMessage = {
+  msg: typeof LOSE;
 };
 
 type Message =
@@ -54,6 +55,7 @@ type Message =
   | AcceptPlayMessage
   | CancelMessage
   | MoveMessage
-  | RejectPlayMessage;
+  | RejectPlayMessage
+  | LoseMessage;
 
 export default Message;

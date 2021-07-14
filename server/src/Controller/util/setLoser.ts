@@ -1,4 +1,4 @@
-import { ExtendedSocket } from "../../@types/ExtendedSocket";
+import ExtendedSocket from "src/@types/ExtendedSocket";
 import { app } from "../../config/firebaseApp";
 import admin from "firebase-admin";
 import isObject from "../../util/isObject";
@@ -23,6 +23,7 @@ export function setLoser(socket: ExtendedSocket) {
         });
 
     socket.opponent.send(JSON.stringify({ msg: "win" }));
+    socket.send(JSON.stringify({ msg: "lose" }));
     socket.opponent.opponent = "";
   }
 }

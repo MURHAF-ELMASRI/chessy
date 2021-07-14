@@ -1,12 +1,6 @@
-import  from "./UserSocket";
 import ExtendedObject from "./ExtendedObject";
 import ExtendedRequest from "./ExtendedRequest";
 import ExtendedSocket from "./ExtendedSocket";
-import ExtendedClient from "./ExtendedClient";
+import ExtendedClients from "./ExtendedClients";
 
-export {
-  ExtendedObject,
-  ExtendedRequest,
-  ExtendedSocket,
-  ExtendedClient,
-};
+export { ExtendedObject, ExtendedRequest, ExtendedSocket, ExtendedClients };

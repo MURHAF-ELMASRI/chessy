@@ -1,25 +1,27 @@
+import { color } from "src/constants/color";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Color } from "@type/Color";
-import { DialogType } from "@type/DialogTypes";
-import { Position } from "@type/Position";
+import { Color } from "src/types/Color";
+import { DialogType } from "src/types/DialogTypes";
+import { Position } from "src/types/Position";
 
 interface InitialState {
   dialogType: DialogType | "";
-  name?: string;
-  color?: Color;
-  opponentName?: string;
-  uid: string;
+  opponentColor: Color;
+  opponentName: string;
+  opponentUID: string;
   pawnPosition?: Position;
 }
 
 const initialState: InitialState = {
   dialogType: "",
-  uid: "",
+  opponentName: "",
+  opponentUID: "",
+  opponentColor: color.white,
 };
 
 interface RequestPlay {
   opponentName: string;
-  color: Color;
+  opponentColor: Color;
 }
 
 const dialogSlice = createSlice({
@@ -28,9 +30,9 @@ const dialogSlice = createSlice({
   reducers: {
     showChooseStoneColorDialog: (
       state,
-      action: PayloadAction<{ uid: string }>
+      action: PayloadAction<{ opponentUID: string }>
     ) => {
-      state.uid = action.payload.uid;
+      state.opponentUID = action.payload.opponentUID;
       state.dialogType = "chooseStoneColor";
     },
 
@@ -39,8 +41,9 @@ const dialogSlice = createSlice({
       state.pawnPosition = action.payload;
     },
     showRequestPlayDialog: (state, action: PayloadAction<RequestPlay>) => {
+      state.dialogType = "requestPlay";
       state.opponentName = action.payload.opponentName;
-      state.color = action.payload.color;
+      state.opponentColor = action.payload.opponentColor;
     },
     showCancelConfirmationDialog: (state, action: PayloadAction<undefined>) => {
       state.dialogType = "cancelConfirmation";
@@ -59,5 +62,6 @@ export const {
   showReplacePawnDialog,
   hideDialog,
   showCancelConfirmationDialog,
+  showRequestPlayDialog,
 } = dialogSlice.actions;
 export const dialogReducer = dialogSlice.reducer;

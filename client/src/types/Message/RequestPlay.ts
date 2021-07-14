@@ -1,8 +1,8 @@
-import { Color } from "@type/Color";
-import { Move } from "@type/Move";
+import { Color } from "src/types/Color";
+import { Move } from "src/types/Move";
 
 export interface RequestPlay {
   msg: "request-play";
   opponentUID: string;
-  color: Color;
+  playerColor: Color;
 }

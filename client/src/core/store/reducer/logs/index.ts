@@ -21,5 +21,5 @@ const logsSlice = createSlice({
   },
 });
 
-export const { setLogs } = logsSlice.actions;
+export const { setLogs, deleteLogs } = logsSlice.actions;
 export const logsReducer = logsSlice.reducer;

@@ -1,26 +1,18 @@
-import React, { useMemo } from "react";
+import "./configProject";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-import firebaseConfig from "@api/firebase/configuration.json";
 import { Provider as ReduxProvider } from "react-redux";
+import { ThemeProvider } from "@material-ui/core";
+import { createTheme } from "@material-ui/core";
+import App from "./App";
 // Firebase.
-import firebase from "firebase";
-import store from "@store/store";
+import store from "src/core/store/store";
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
-const theme = useMemo(
-  () =>
-    createMuiTheme({
-      palette: {
-        type: "dark",
-      },
-    }),
-  []
-);
+const theme = createTheme({
+  palette: {
+    type: "dark",
+  },
+});
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
@@ -31,10 +23,3 @@ ReactDOM.render(
 
   document.getElementById("root")
 );
-{
-  /* <ThemeProvider theme={theme}>
-    <AuthProvider>
-      <WebSocketProvider>
-        <NotificationProvider>
-          <DialogProvider></DialogProvider> */
-}

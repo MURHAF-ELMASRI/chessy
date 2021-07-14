@@ -9,12 +9,11 @@ import {
 
 import Alert from "@material-ui/lab/Alert";
 import { InlineIcon } from "@iconify/react";
-import { useAppDispatch } from "@hooks/useAppDispatch";
-import { useAppSelector } from "@hooks/useAppSelector";
-import { hideNotification } from "@store/reducer/notification";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
+import { hideNotification } from "src/core/store/reducer/notification";
 
 import windowClose from "@iconify-icons/mdi/window-close";
-import encodeMessage from "@util/encodeMessage";
+import { sendCancelGame } from "src/core/store/reducer/gameState";
 
 const useStyle = makeStyles((theme) => ({
   container: {
@@ -28,9 +27,8 @@ const useStyle = makeStyles((theme) => ({
 const WaitingNotification = ({ open }: { open: boolean }) => {
   const classes = useStyle();
   const dispatch = useAppDispatch();
-  const webSocket = useAppSelector((state) => state.webSocket.webSocket);
   const handleClick = () => {
-    webSocket?.send(encodeMessage({ msg: "cancel" }));
+    dispatch(sendCancelGame());
     dispatch(hideNotification());
   };
 

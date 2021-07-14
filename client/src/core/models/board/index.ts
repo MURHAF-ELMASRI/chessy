@@ -1,21 +1,12 @@
-import { color } from "@constants/color";
-import { square } from "@models/square";
-import { MoveRules } from "@models/stone/MoveRules";
-import { Color } from "@type/Color";
-import { Position } from "@type/Position";
-import { SquareID } from "@type/SquareID";
+import { color } from "src/constants/color";
+import { MoveRules } from "src/core/models/stone/MoveRules";
+import { Color } from "src/types/Color";
+import { Position } from "src/types/Position";
+import { SquareID } from "src/types/SquareID";
+import { square } from "../square";
 import dangerOnKing from "./DangerOnKing";
-import initializeBord from "./initializeBord";
+import { initializeBord } from "./initializeBord";
 import { isInRange } from "./isInRange";
-import { immerable, produce } from "immer";
-import {
-  addAntiDiagonal,
-  addDiagonal,
-  addHorizontal,
-  addVertical,
-  kingMove,
-  pawnMove,
-} from "./MoveAlgo";
 
 enum squareState {
   outOfRange,
@@ -30,17 +21,35 @@ function hasFlag(x: MoveRules, flag: MoveRules) {
 
 class boardClass {
   readonly board;
-  public playerKingPosition: Position = { i: 7, j: 4 };
+  public playerKingPosition: Position;
   readonly playerColor: Color;
-  constructor(color: Color) {
-    this.playerColor = color;
-    //TODO: change the bord based on player color
-    this.board = initializeBord(color);
+  constructor(playerColor: Color) {
+    this.playerColor = playerColor;
+    if (playerColor === color.white) this.playerKingPosition = { i: 7, j: 4 };
+    else this.playerKingPosition = { i: 7, j: 3 };
+    this.board = initializeBord(playerColor);
   }
 
   moveStone(src: Position, dest: Position) {
-    this.board[dest.i][dest.j] = this.board[src.i][src.j];
-    delete this.board[src.i][src.j];
+    const stone = this.board[src.i][src.j].stone;
+    if (stone?.type === "king" && stone.color === this.playerColor)
+      this.playerKingPosition = { i: dest.i, j: dest.j };
+    this.board[dest.i][dest.j].stone = this.board[src.i][src.j].stone;
+    delete this.board[src.i][src.j].stone;
+  }
+
+  getWhereStoneCanGo() {
+    //initalizing stone position
+    const initPos: { [key: number]: SquareID[] } = {};
+    //TODO: optimize this function by set two ; one for looping over array from 1 to 16 if player game is black and the rest for white color
+    this.board.forEach((e, i) =>
+      e.forEach((x, j) => {
+        if (x.stone && x.stone.color === this.playerColor) {
+          initPos[x.stone.id] = this.getAvailableSquare({ i, j });
+        }
+      })
+    );
+    return initPos;
   }
 
   getAvailableSquare(src: Position) {
@@ -53,7 +62,7 @@ class boardClass {
     if (hasFlag(stone.move, MoveRules.antiDiagonal))
       this.addAntiDiagonal(val, src);
     if (hasFlag(stone.move, MoveRules.king)) this.kingMove(val, src);
-    if (hasFlag(stone.move, MoveRules.knight)) this.kingMove(val, src);
+    if (hasFlag(stone.move, MoveRules.knight)) this.knightMove(val, src);
     if (hasFlag(stone.move, MoveRules.pawn)) this.pawnMove(val, src);
 
     return val;
@@ -61,9 +70,9 @@ class boardClass {
 
   getSquareState(dest: Position) {
     if (!isInRange(dest.i, dest.j)) return squareState.outOfRange;
-    if (!this.board[dest.i][dest.j].stone) return squareState.empty;
-    if (this.board[dest.i][dest.j].stone.color === this.playerColor)
-      return squareState.friend;
+    const board = this.board[dest.i][dest.j];
+    if (!board.stone) return squareState.empty;
+    if (board.stone.color === this.playerColor) return squareState.friend;
     return squareState.opponent;
   }
 
@@ -93,12 +102,12 @@ class boardClass {
   }
   addHorizontal(val: SquareID[], src: Position) {
     for (let k = src.j + 1; k < 8; k++) {
-      const dest = { i: k, j: src.j };
+      const dest = { i: src.i, j: k };
       if (!this.addToValArray(src, dest, val)) break;
     }
 
     for (let k = src.j - 1; k >= 0; k--) {
-      const dest = { i: k, j: src.j };
+      const dest = { i: src.i, j: k };
       if (!this.addToValArray(src, dest, val)) break;
     }
   }
@@ -219,13 +228,23 @@ class boardClass {
 
   pawnMove(val: SquareID[], src: Position) {
     //check if stone could eat the opponent in the upper right
-    this.addToValArray(src, { i: src.i - 1, j: src.j - 1 }, val);
+    let currentState = this.getSquareState({ i: src.i - 1, j: src.j - 1 });
+    if (currentState === squareState.opponent)
+      this.addToValArray(src, { i: src.i - 1, j: src.j - 1 }, val);
+
     //if stone could eat the opponent in the upper left
-    this.addToValArray(src, { i: src.i - 1, j: src.j + 1 }, val);
+
+    currentState = this.getSquareState({ i: src.i - 1, j: src.j + 1 });
+    if (currentState === squareState.opponent)
+      this.addToValArray(src, { i: src.i - 1, j: src.j + 1 }, val);
     //two jump of one jump for pawn
 
-    if (this.addToValArray(src, { i: src.i - 1, j: src.j }, val)) {
-      this.addToValArray(src, { i: src.i - 2, j: src.j }, val);
+    currentState = this.getSquareState({ i: src.i - 1, j: src.j });
+    if (currentState === squareState.empty) {
+      currentState = this.getSquareState({ i: src.i - 2, j: src.j });
+      if (currentState === squareState.empty && src.i === 6)
+        this.addToValArray(src, { i: src.i - 2, j: src.j }, val);
+      this.addToValArray(src, { i: src.i - 1, j: src.j }, val);
     }
   }
 }

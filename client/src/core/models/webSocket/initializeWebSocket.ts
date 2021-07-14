@@ -1,31 +1,48 @@
-import { setMoveMessage } from "@store/reducer/gameState";
-import { showActionLessNotification } from "@store/reducer/notification";
-import store from "@store/store";
-import decodeMessage from "@util/decodeMessage";
+import { StrictMode } from "react";
+import { color } from "src/constants/color";
+import { showRequestPlayDialog } from "src/core/store/reducer/dialog";
+import {
+  checkLose,
+  moveStone,
+  setBoard,
+  setIsPlaying,
+} from "src/core/store/reducer/gameState";
+import { changeTurn, startGame } from "src/core/store/reducer/gameState";
+import { deleteLogs } from "src/core/store/reducer/logs";
+import { showActionLessNotification } from "src/core/store/reducer/notification";
+import { AppDispatch, RootState } from "src/core/store/store";
+import { getStore } from "src/core/store/storeHelper";
 
+import decodeMessage from "src/util/decodeMessage";
 export function initializeWebSocket(url: string): WebSocket {
   const webSocket = new WebSocket(url);
+  const store = getStore();
 
+  const storeObj = { store };
   webSocket.onmessage = (msg: MessageEvent) => {
     const receivedMessage = decodeMessage(msg.data);
-    console.log("received Message", receivedMessage.msg);
+    console.log("received Message", receivedMessage);
     switch (receivedMessage.msg) {
-      case "move":
-        console.log("moving");
-        //dispatch set move according to the message from server
-        break;
       case "chat":
         console.log("chat");
         break;
       case "request-play":
         console.log("request-play hit");
-        //TO DO: add request play dialog
+
+        store.dispatch(
+          showRequestPlayDialog({
+            opponentColor: receivedMessage.playerColor,
+            opponentName: receivedMessage.displayName,
+          })
+        );
+
         break;
       case "reject-play":
+        console.log("reject-play hit");
         store.dispatch(
           showActionLessNotification({
             notificationType: "error",
-            content: `${receivedMessage.name} reject your inviting 😥`,
+            content: `${receivedMessage.displayName} reject your inviting 😥`,
           })
         );
         break;
@@ -38,23 +55,22 @@ export function initializeWebSocket(url: string): WebSocket {
           })
         );
         break;
-      case "accept-play":
-        /*
-        TODO:
-        dispatch:
-        setTurn of player 
-        setPlayerColor
-        setIsPlaying
-        setStatGame
-        set logs to "" delete the logs
+      case "set-play":
+        const gameState = {
+          playingColor: receivedMessage.color,
+          isPlayerTurn: receivedMessage.color === color.black ? false : true,
+        };
 
-        */
+        store.dispatch(startGame(gameState));
+        store.dispatch(deleteLogs());
         store.dispatch(
           showActionLessNotification({
             notificationType: "success",
             content: "Game started 🏁",
           })
         );
+        console.log(gameState.playingColor);
+        store.dispatch(setBoard({ color: gameState.playingColor }));
         break;
       case "win":
         //setIs Playing
@@ -65,9 +81,34 @@ export function initializeWebSocket(url: string): WebSocket {
             content: "Congrats you win 💪🥳🎉",
           })
         );
+        store.dispatch(setIsPlaying(false));
         break;
       case "move":
-        store.dispatch(setMoveMessage(receivedMessage.move));
+        console.log(receivedMessage.move);
+        const reverseMoveSrc = {
+          i: 7 - receivedMessage.move.src.i,
+          j: 7 - receivedMessage.move.src.j,
+        };
+
+        const reverseMoveDest = {
+          i: 7 - receivedMessage.move.dest.i,
+          j: 7 - receivedMessage.move.dest.j,
+        };
+        store.dispatch(
+          moveStone({ src: reverseMoveSrc, dest: reverseMoveDest })
+        );
+        store.dispatch(changeTurn());
+        store.dispatch(checkLose());
+        break;
+
+      case "lose":
+        store.dispatch(setIsPlaying(false));
+        store.dispatch(
+          showActionLessNotification({
+            notificationType: "error",
+            content: "Sorry! you are lost 😢",
+          })
+        );
         break;
       default:
         store.dispatch(
@@ -80,15 +121,22 @@ export function initializeWebSocket(url: string): WebSocket {
         );
         break;
     }
-
-    webSocket.onerror = (e) => {
-      store.dispatch(
-        showActionLessNotification({
-          notificationType: "error",
-          content: "Error connecting with server ",
-        })
-      );
-    };
+  };
+  webSocket.onerror = (e) => {
+    store.dispatch(
+      showActionLessNotification({
+        notificationType: "error",
+        content: "Error connecting with server ",
+      })
+    );
+  };
+  webSocket.onclose = (e) => {
+    store.dispatch(
+      showActionLessNotification({
+        notificationType: "error",
+        content: "you are not connected to server",
+      })
+    );
   };
   return webSocket;
 }

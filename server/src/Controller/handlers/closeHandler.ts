@@ -1,8 +1,10 @@
-import ExtendedSocket from "../../@types/ExtendedSocket";
+import { ExtendedSocket } from "src/@types";
 import { app } from "../../config/firebaseApp";
 import { setLoser } from "../util/setLoser";
+import isObject from "../../util/isObject";
 
 export default function closeHandler({ socket }: { socket: ExtendedSocket }) {
+  if (!isObject(socket.opponent) || !isObject(socket.opponent.opponent)) return;
   let uid = socket.uid;
   setLoser(socket);
   if (uid)

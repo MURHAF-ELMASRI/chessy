@@ -3,9 +3,10 @@ import http from "http";
 import { verifyClient } from "./util/app/verifyClient";
 import { setUsersOffline } from "./util/app/setUsersOffline";
 import { controller } from "./Controller/controller";
-import { ExtendedRequest, ExtendedSocket } from "./@types";
+import { ExtendedRequest, ExtendedSocket } from "src/@types";
 import decodeMessage from "./util/decodeMessage";
 import { closeHandler } from "./Controller/handlers";
+import setUserOnline from "./util/app/setUserOnline";
 
 const server = http.createServer();
 const ws = new webSocket.Server({
@@ -19,15 +20,18 @@ setUsersOffline();
 function logConnection(req: ExtendedRequest) {
   console.log("-------------------------");
   console.log("connecting from ", req.socket.remoteAddress);
-  console.log(req.name, req.uid);
+  console.log(req.displayName, req.uid);
   console.log("-------------------------");
 }
 
 ws.on("connection", (socket: ExtendedSocket, req: ExtendedRequest) => {
+  console.log("connect ");
+
   logConnection(req);
-  //TODO : update user state to online
+  setUserOnline(req.uid!);
+
   socket.uid = req.uid;
-  socket.name = req.name;
+  socket.displayName = req.displayName;
 
   socket.onmessage = async (messageEvent: MessageEvent) => {
     //TODO: handle error parser msg
@@ -38,6 +42,7 @@ ws.on("connection", (socket: ExtendedSocket, req: ExtendedRequest) => {
     try {
       controller(msg, socket, ws.clients);
     } catch (e) {
+      console.error("error ", e.message);
       socket.send(
         JSON.stringify({
           msg: "error",

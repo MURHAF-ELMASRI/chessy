@@ -1,10 +1,10 @@
 import { InlineIcon } from "@iconify/react";
-import stone from "@models/stone/stone";
+import stone from "src/core/models/stone/stone";
 import { StoneItem } from "./StoneItem";
 
 interface Props {
   stone: stone;
-  handleClick: () => void;
+  handleClick: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 //ToDo:after stone have been render there is no need to render it all the game except when pawn change to another stone

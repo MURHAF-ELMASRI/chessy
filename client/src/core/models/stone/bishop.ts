@@ -1,7 +1,6 @@
 import { stone } from "./stone";
-import { stoneIcons } from "@icons/stoneIcons";
-import { Color } from "@type/Color";
-import { Position } from "@type/Position";
+import { stoneIcons } from "src/assets/icons/stoneIcons";
+import { Color } from "src/types/Color";
 import { MoveRules } from "./MoveRules";
 export class bishop extends stone {
   constructor(readonly id: number, readonly color: Color) {

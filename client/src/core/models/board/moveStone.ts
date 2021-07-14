@@ -1,7 +1,7 @@
 //utitliy function to do the logic of moving a stone from one place to another
 
-import { square } from "@models/square";
-import { Position } from "@type/Position";
+import { square } from "src/core/models/square";
+import { Position } from "src/types/Position";
 
 // stone jump from src to dest
 export default function moveStone(

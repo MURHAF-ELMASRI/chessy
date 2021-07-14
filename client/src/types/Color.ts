@@ -1,3 +1,3 @@
-import { color } from "@constants/color";
+import { color } from "src/constants/color";
 
-export type Color = color;
+export type Color = "white" | "black";

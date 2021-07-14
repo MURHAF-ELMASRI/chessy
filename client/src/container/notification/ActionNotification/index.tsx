@@ -1,21 +1,14 @@
-import { useAppSelector } from "@hooks/useAppSelector";
-import { ActionNotification } from "@type/ActionNotificationTypes";
-import { useCallback } from "react";
 import WaitingNotification from "./WaitingNotification";
+import { NotificationTypes } from "src/types/NotificationTypes";
 
-const ActionNotification = () => {
-  const notificationType = useAppSelector(
-    (state) => state.notification.notificationType
-  );
+interface Props {
+  notificationType: NotificationTypes;
+}
 
-  const shouldNotificationShow = useCallback(
-    (type: string) => type === notificationType,
-    [notificationType]
-  );
-
+const ActionNotification = ({ notificationType }: Props) => {
   return (
     <>
-      <WaitingNotification open={shouldNotificationShow(notificationType)} />
+      <WaitingNotification open={notificationType === "wait"} />
     </>
   );
 };

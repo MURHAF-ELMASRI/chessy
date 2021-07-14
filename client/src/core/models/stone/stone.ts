@@ -1,6 +1,5 @@
-import { Color } from "@type/Color";
-import { Position } from "@type/Position";
-import { Stone } from "@type/Stone";
+import { Color } from "src/types/Color";
+import { Stone } from "src/types/Stone";
 import { MoveRules } from "./MoveRules";
 
 export abstract class stone {

@@ -5,19 +5,26 @@ import { Dialog, DialogActions, DialogTitle, Button } from "@material-ui/core";
 //util
 
 //state
-import { useAppDispatch } from "@hooks/useAppDispatch";
-import { useAppSelector } from "@hooks/useAppSelector";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
 
 //action
-import { hideDialog } from "@store/reducer/dialog";
-import { hideNotification } from "@store/reducer/notification";
-import { Color } from "@material-ui/lab/Alert";
-import { acceptGame, rejectGame } from "@store/reducer/gameState";
-import { color } from "@constants/color";
+import { hideDialog } from "src/core/store/reducer/dialog";
+import { hideNotification } from "src/core/store/reducer/notification";
+import { acceptGame, rejectGame } from "src/core/store/reducer/gameState";
+import { color } from "src/constants/color";
+import { Color } from "src/types/Color";
 
-const DialogOption = ({ color }: { color: boolean }) => {
+interface Props {
+  open: boolean;
+  opponent: {
+    name: string;
+    uid: string;
+    color: Color;
+  };
+}
+
+const RequestPlayDialog = ({ open, opponent }: Props) => {
   const dispatch = useAppDispatch();
-
   const handleAccept = useCallback((color) => {
     dispatch(acceptGame());
     dispatch(hideDialog());
@@ -29,30 +36,7 @@ const DialogOption = ({ color }: { color: boolean }) => {
     dispatch(rejectGame());
     dispatch(hideDialog());
   }, []);
-
-  return (
-    <>
-      <Button onClick={() => handleAccept(color)}>yes</Button>
-      <Button onClick={() => handleReject()}>no</Button>
-    </>
-  );
-};
-
-interface Props {
-  open: boolean;
-  player?: {
-    name: string;
-    uid: string;
-  };
-  color?: Color;
-}
-
-const RequestPlayDialog = ({ open }: Props) => {
-  const [opponentName, stoneColor] = useAppSelector((state) => [
-    state.dialog.opponentName,
-    state.dialog.color,
-  ]);
-
+  console.log(opponent);
   return (
     <Dialog
       open={open}
@@ -60,13 +44,16 @@ const RequestPlayDialog = ({ open }: Props) => {
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        Player {opponentName} is requesting for play with{" "}
-        {stoneColor === color.white ? "white" : "black"}
+        Player {opponent.name} is requesting for play with{" "}
+        {opponent.color === color.white ? "white" : "black"}
       </DialogTitle>
 
-      <DialogActions>{DialogOption}</DialogActions>
+      <DialogActions>
+        <Button onClick={handleAccept}>yes</Button>
+        <Button onClick={handleReject}>no</Button>
+      </DialogActions>
     </Dialog>
   );
 };
 
-export default memo(RequestPlayDialog);
+export default RequestPlayDialog;

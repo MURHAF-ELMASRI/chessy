@@ -1,5 +1,5 @@
-import { color } from "@constants/color";
-import { Color } from "@type/Color";
+import { color } from "src/constants/color";
+import { Color } from "src/types/Color";
 import styled from "styled-components";
 
 interface SquareItemProps {

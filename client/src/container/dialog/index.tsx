@@ -1,14 +1,21 @@
-import { useAppSelector } from "@hooks/useAppSelector";
+import { useAppSelector } from "src/hooks/useAppSelector";
 import { memo } from "react";
 
 import ReplacePawnDialog from "./ReplacePawnDialog";
 import RequestPlayDialog from "./RequestPlayDialog";
 import ChooseStoneColorDialog from "./ChooseStoneColorDialog";
-import { DialogType } from "@type/DialogTypes";
+import { DialogType } from "src/types/DialogTypes";
 import CancelConfirmationDialog from "./CancelConfirmationDialog";
 
 function DialogComponent() {
-  const dialogType = useAppSelector((state) => state.dialog.dialogType);
+  const [dialogType, opponentName, opponentUID, opponentColor] = useAppSelector(
+    (state) => [
+      state.dialog.dialogType,
+      state.dialog.opponentName,
+      state.dialog.opponentUID,
+      state.dialog.opponentColor,
+    ]
+  );
 
   function shouldDialogOpen(type: DialogType) {
     return type === dialogType;
@@ -16,8 +23,18 @@ function DialogComponent() {
   return (
     <>
       <ReplacePawnDialog open={shouldDialogOpen("replacePawn")} />
-      <RequestPlayDialog open={shouldDialogOpen("requestPlay")} />
-      <ChooseStoneColorDialog open={shouldDialogOpen("chooseStoneColor")} />
+      <RequestPlayDialog
+        open={shouldDialogOpen("requestPlay")}
+        opponent={{
+          name: opponentName,
+          uid: opponentUID,
+          color: opponentColor,
+        }}
+      />
+      <ChooseStoneColorDialog
+        opponentUID={opponentUID}
+        open={shouldDialogOpen("chooseStoneColor")}
+      />
       <CancelConfirmationDialog open={shouldDialogOpen("cancelConfirmation")} />
     </>
   );

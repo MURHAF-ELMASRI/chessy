@@ -1,9 +1,14 @@
-import { stoneClasses } from "@models/stone";
-import { color } from "@constants/color";
-import { Stone } from "@type/Stone";
-import { Color } from "@type/Color";
-import "@models/square";
-import { square } from "@models/square";
+import { stoneClasses } from "src/core/models/stone";
+import { color } from "src/constants/color";
+import { Stone } from "src/types/Stone";
+import { Color } from "src/types/Color";
+import "src/core/models/square";
+import { square } from "src/core/models/square";
+
+export const initializeBord = (playerColor: Color) => {
+  if (playerColor === color.white) return initialBoard;
+  else return initialBoard.reverse().map((e) => e.reverse().map((e) => e));
+};
 
 const MakeStoneObject = (stone: Stone, id: number, color: Color) => {
   switch (stone) {
@@ -15,8 +20,6 @@ const MakeStoneObject = (stone: Stone, id: number, color: Color) => {
       return new stoneClasses.king(id, color);
     case "pawn":
       return new stoneClasses.pawn(id, color);
-    case "rook":
-      return new stoneClasses.rook(id, color);
     case "knight":
       return new stoneClasses.knight(id, color);
     case "queen":
@@ -62,10 +65,7 @@ const whiteStoneObjects = [
   MakeStoneObject("knight", 31, color.white),
   MakeStoneObject("rook", 32, color.white),
 ];
-export const initializeBord = (playerColor: Color) => {
-  if (playerColor === color.white) return initialBoard;
-  else return initialBoard.reverse().map((e) => e.reverse().map((e) => e));
-};
+
 const initialBoard = [
   [
     new square("a8", color.white, blackStoneObjects[0]),
@@ -106,7 +106,7 @@ const initialBoard = [
     new square("e5", color.black),
     new square("f5", color.white),
     new square("g5", color.black),
-    new square("h6", color.white),
+    new square("h5", color.white),
   ],
   [
     new square("a4", color.white),
@@ -150,4 +150,3 @@ const initialBoard = [
     new square("h1", color.white, whiteStoneObjects[15]),
   ],
 ];
-export default initializeBord;

@@ -1,7 +1,6 @@
 import accountCircle from "@iconify-icons/mdi/account-circle";
 import { Avatar } from "@material-ui/core";
 import { InlineIcon } from "@iconify/react";
-import { User } from "@type/User";
 
 interface Props {
   photoURL: string | null;

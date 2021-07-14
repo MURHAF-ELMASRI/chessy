@@ -1,1 +1,1 @@
-export type ActionNotificationTypes = "gameStart" | "wait";
+export type ActionNotificationTypes = "wait";

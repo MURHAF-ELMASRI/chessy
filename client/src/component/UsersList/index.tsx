@@ -1,6 +1,6 @@
 import React from "react";
 import { List } from "@material-ui/core";
-import { User } from "@type/User";
+import { User } from "src/types/User";
 import ListElement from "./ListElement";
 
 interface Props {

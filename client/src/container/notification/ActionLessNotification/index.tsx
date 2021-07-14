@@ -1,26 +1,32 @@
+import { useMemo } from "react";
 import { Typography, Snackbar } from "@material-ui/core";
 
 import Alert from "@material-ui/lab/Alert";
-import { useAppDispatch } from "@hooks/useAppDispatch";
-import { useAppSelector } from "@hooks/useAppSelector";
 
-import { ActionLessNotification } from "@type/ActionLessNotificationTypes";
-import { hideNotification } from "@store/reducer/notification";
+import { NotificationTypes } from "src/types/NotificationTypes";
+import { ActionLessNotificationTypes } from "src/types/ActionLessNotificationTypes";
+import { useEffect } from "react";
+import { hideNotification } from "src/core/store/reducer/notification";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
 
-const ActionLessNotification = ({ open }: { open: boolean }) => {
+interface Props {
+  notificationType: NotificationTypes;
+  content?: string;
+}
+
+const ActionLessNotification = ({ notificationType, content }: Props) => {
   const dispatch = useAppDispatch();
-  const [content, notificationType] = useAppSelector((state) => [
-    state.notification.content,
-    state.notification.notificationType,
-  ]);
+  const isOpen = useMemo(() => {
+    return ["success", "error", "warning", "info"].includes(notificationType);
+  }, [notificationType]);
 
   useEffect(() => {
-    if (open) setTimeout(() => dispatch(hideNotification()), 3000);
-  }, [open]);
+    if (isOpen) setTimeout(() => dispatch(hideNotification()), 2000);
+  }, [isOpen]);
 
   return (
     <Snackbar
-      open={open}
+      open={isOpen}
       anchorOrigin={{
         vertical: "top",
         horizontal: "center",
@@ -29,7 +35,9 @@ const ActionLessNotification = ({ open }: { open: boolean }) => {
       <Alert
         elevation={6}
         variant="filled"
-        severity={notificationType as ActionLessNotification}
+        severity={
+          (notificationType as ActionLessNotificationTypes) || undefined
+        }
       >
         <Typography>{content}</Typography>
       </Alert>

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ActionLessNotificationTypes } from "@type/ActionLessNotificationTypes";
-import { ActionNotificationTypes } from "@type/ActionNotificationTypes";
+import { ActionNotificationTypes } from "src/types/ActionNotificationTypes";
+import { ActionLessNotificationTypes } from "src/types/ActionLessNotificationTypes";
+import store from "../../store";
 
 interface InitialState {
   notificationType: ActionNotificationTypes | ActionLessNotificationTypes | "";

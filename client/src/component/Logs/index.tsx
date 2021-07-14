@@ -1,4 +1,4 @@
-import { useAppSelector } from "@hooks/useAppSelector";
+import { useAppSelector } from "src/hooks/useAppSelector";
 import { Typography } from "@material-ui/core";
 
 function Logs() {

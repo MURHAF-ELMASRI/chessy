@@ -8,8 +8,8 @@ import {
 } from "@material-ui/core";
 
 //states
-import { useAppDispatch } from "@hooks/useAppDispatch";
-import { hideDialog } from "@store/reducer/dialog";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
+import { hideDialog } from "src/core/store/reducer/dialog";
 
 import firebase from "firebase";
 

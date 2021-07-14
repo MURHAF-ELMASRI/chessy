@@ -5,50 +5,54 @@ import {
   DialogTitle,
   IconButton,
   DialogActions,
+  Button,
 } from "@material-ui/core";
 
 //icons
 import { Icon } from "@iconify/react";
-import { stoneIcons } from "@icons/stoneIcons";
+import { stoneIcons } from "src/assets/icons/stoneIcons";
 import windowClose from "@iconify-icons/mdi/window-close";
 
 //states
-import { useAppDispatch } from "@hooks/useAppDispatch";
-import { hideDialog } from "@store/reducer/dialog";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
+import { hideDialog } from "src/core/store/reducer/dialog";
 //util
-import { requestPlay } from "@store/reducer/gameState";
-import { Color } from "@type/Color";
-import { showActionNotification } from "@store/reducer/notification";
+import { requestPlay } from "src/core/store/reducer/gameState";
+import { Color } from "src/types/Color";
+import { color } from "src/constants/color";
+import { showActionNotification } from "src/core/store/reducer/notification";
 
 interface Props {
   opponentUID: string;
-  color: Color;
+  open: boolean;
 }
 
-const StoneOption = ({ opponentUID, color }: Props) => {
+const StoneOption = ({ opponentUID }: { opponentUID: string }) => {
   const dispatch = useAppDispatch();
-  const handleChoseColor = useCallback((color) => {
+  const handleChoseColor = useCallback((playerColor: Color) => {
     dispatch(
       requestPlay({
         opponentUID,
-        color,
+        playerColor,
       })
     );
+    dispatch(showActionNotification("wait"));
+    dispatch(hideDialog());
   }, []);
 
   return (
     <>
-      <IconButton onClick={() => handleChoseColor(true)}>
+      <IconButton onClick={() => handleChoseColor(color.white)}>
         <Icon icon={stoneIcons.knight} />
       </IconButton>
-      <IconButton onClick={() => handleChoseColor(false)}>
+      <IconButton onClick={() => handleChoseColor(color.black)}>
         <Icon style={{ color: "black" }} icon={stoneIcons.knight} />
       </IconButton>
     </>
   );
 };
 
-const ChooseStoneColorDialog = ({ open }: Props & { open: boolean }) => {
+const ChooseStoneColorDialog = ({ open, opponentUID }: Props) => {
   const dispatch = useAppDispatch();
   const handleClose = useCallback(() => dispatch(hideDialog()), []);
 
@@ -59,17 +63,12 @@ const ChooseStoneColorDialog = ({ open }: Props & { open: boolean }) => {
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">choose color to play</DialogTitle>
-      <DialogContent>{StoneOption}</DialogContent>
+      <DialogContent>{<StoneOption opponentUID={opponentUID} />}</DialogContent>
       <DialogActions>
-        <IconButton onClick={handleClose}>
-          <Icon icon={windowClose} />
-        </IconButton>
+        <Button onClick={handleClose}>cancel</Button>
       </DialogActions>
     </Dialog>
   );
 };
 
 export default memo(ChooseStoneColorDialog);
-function showWaitingNotification(): any {
-  throw new Error("Function not implemented.");
-}

@@ -1,6 +1,7 @@
 import firebase from "firebase";
-import { showActionLessNotification } from "@store/reducer/notification";
-import store from "@store/store";
+import { reConnectServer } from "src/core/store/reducer/gameState";
+import { showActionLessNotification } from "src/core/store/reducer/notification";
+import store from "src/core/store/store";
 
 //TODO: optimization : set users list to global state and then loop over the list to check if the user is in it.
 
@@ -18,15 +19,16 @@ const onAuthStateChangedCallback = async (user: firebase.User | null) => {
             email: user.email,
             displayName: user.displayName,
             photoURL: user.photoURL,
+            state: "online",
           });
       });
-
     store.dispatch(
       showActionLessNotification({
         notificationType: "success",
         content: "you are logged in",
       })
     );
+    store.dispatch(reConnectServer());
   }
 };
 

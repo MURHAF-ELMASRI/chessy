@@ -8,10 +8,10 @@ import {
 
 //icon
 import { Icon } from "@iconify/react";
-import { stoneIcons } from "@icons/stoneIcons";
+import { stoneIcons } from "src/assets/icons/stoneIcons";
 import { memo, useCallback } from "react";
-import { useAppDispatch } from "@hooks/useAppDispatch";
-import { hideDialog } from "@store/reducer/dialog";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
+import { hideDialog } from "src/core/store/reducer/dialog";
 import { map } from "lodash";
 
 const StoneOption = () => {

@@ -4,3 +4,4 @@ export const ACCEPT_PLAY = "accept-play";
 export const CANCEL = "cancel";
 export const MOVE = "move";
 export const CLOSE = "close";
+export const LOSE = "lose";

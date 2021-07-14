@@ -1,7 +1,7 @@
 //utility function return the position of stone which make danger on specific square
-import { square } from "@models/square";
-import { Color } from "@type/Color";
-import { Position } from "@type/Position";
+import { square } from "src/core/models/square";
+import { Color } from "src/types/Color";
+import { Position } from "src/types/Position";
 import { isInRange } from "./isInRange";
 
 const stoneMap = {
@@ -34,8 +34,10 @@ const squareState = (sq: square, color: Color) => {
 
 //return true of false
 export default function IsDangerOnStone(board: square[][], src: Position) {
-  if (!board[src.i][src.j].stone) return false;
-  const colorOfStone = board[src.i][src.j].stone.color;
+  const square = board[src.i][src.j];
+  if (!square.stone) return false;
+
+  const colorOfStone = square.stone.color;
   //scan vertically ----------
   for (let i = src.i - 1; i >= 0; i--) {
     if (!isInRange(i, src.j)) break;

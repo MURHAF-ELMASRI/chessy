@@ -2,7 +2,7 @@
 import { Grid, makeStyles, Typography, IconButton } from "@material-ui/core";
 import UserAvatar from "../UserAvatar";
 //states
-import LogOutButton from "@component/LogOutButton";
+import LogOutButton from "src/component/LogOutButton";
 //types
 import firebase from "firebase";
 

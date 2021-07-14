@@ -15,8 +15,13 @@ const uiConfig = {
 
 function RegisterPanel() {
   return (
-    <Grid container direction="row" alignContent="center" justify="center">
-      <Grid item container justify="center">
+    <Grid
+      container
+      direction="row"
+      alignContent="center"
+      justifyContent="center"
+    >
+      <Grid item container justifyContent="center">
         <Typography variant="h5">You need to </Typography>
         <Typography variant="h4" color="secondary">
           {" "}

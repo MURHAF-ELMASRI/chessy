@@ -11,10 +11,10 @@ import {
   Button,
 } from "@material-ui/core";
 
-import { useAppSelector } from "@hooks/useAppSelector";
-import { showChooseStoneColorDialog } from "@store/reducer/dialog";
-import { useAppDispatch } from "@hooks/useAppDispatch";
-import { User } from "@type/User";
+import { useAppSelector } from "src/hooks/useAppSelector";
+import { showChooseStoneColorDialog } from "src/core/store/reducer/dialog";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
+import { User } from "src/types/User";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -43,7 +43,7 @@ const UserInfo: React.FC<Props> = ({ user, setKeep }) => {
   );
 
   const handlePlay = useCallback(() => {
-    dispatch(showChooseStoneColorDialog({ uid: user.uid }));
+    dispatch(showChooseStoneColorDialog({ opponentUID: user.uid }));
     setKeep(false);
   }, []);
 
@@ -72,8 +72,8 @@ const UserInfo: React.FC<Props> = ({ user, setKeep }) => {
       <CardActions>
         {user.state === "online" && (
           <Button
-            disabled={notificationType === "info"}
-            onClick={() => handlePlay()}
+            disabled={notificationType === "wait"}
+            onClick={handlePlay}
             color="primary"
             variant="contained"
           >

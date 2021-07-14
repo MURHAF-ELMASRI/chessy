@@ -1,7 +1,7 @@
 //square may have stone on it
 
-import { Color } from "@type/Color";
-import { SquareID } from "@type/SquareID";
+import { Color } from "src/types/Color";
+import { SquareID } from "src/types/SquareID";
 import { immerable } from "immer";
 import stone from "../stone/stone";
 

@@ -1,4 +1,11 @@
-export enum color {
-  white = 0,
-  black = 1,
+import { Color } from "src/types/Color";
+
+interface ColorInterface {
+  black: Color;
+  white: Color;
 }
+
+export const color: ColorInterface = {
+  black: "black",
+  white: "white",
+};

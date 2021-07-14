@@ -13,12 +13,18 @@ import {
 } from "@material-ui/core";
 import UserAvatar from "../UserAvatar";
 import UserPopup from "./UserPopup";
-import { User } from "@type/User";
+import { User } from "src/types/User";
 
-const stateColor = {
-  online: "#4caf50",
-  offline: "#f44336",
-  busy: "#ff9800",
+interface StateColorInterface {
+  online: "badgeGreen";
+  busy: "badgeYellow";
+  offline: "badgeRed";
+}
+
+const stateColor: StateColorInterface = {
+  online: "badgeGreen",
+  busy: "badgeYellow",
+  offline: "badgeRed",
 };
 
 interface Props {
@@ -32,6 +38,7 @@ const ListElement: React.FC<Props> = ({ user }) => {
   const [keep, setKeep] = useState(false);
 
   //TODO : put the list Item in the top of component and if it works get it outside
+  if (user.state != "offline") console.log(user.state);
 
   return (
     <Tooltip
@@ -53,7 +60,7 @@ const ListElement: React.FC<Props> = ({ user }) => {
               <ListItemAvatar>
                 <ListItemIcon>
                   <Badge
-                    style={{ backgroundColor: stateColor[user.state] }}
+                    classes={{ badge: classes[stateColor[user.state]] }}
                     variant="dot"
                   >
                     <UserAvatar
@@ -96,5 +103,14 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     width: "100%",
+  },
+
+  badgeGreen: {
+    backgroundColor: "#4caf50",
+  },
+  badgeYellow: { backgroundColor: "#ff9800" },
+
+  badgeRed: {
+    backgroundColor: "#f44336",
   },
 }));

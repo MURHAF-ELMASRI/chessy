@@ -1,3 +1,3 @@
 export interface RejectMessage {
-  msg: "reject-game";
+  msg: "reject-play";
 }

@@ -9,8 +9,8 @@ import {
   Fab,
   Slide,
 } from "@material-ui/core";
-import UserStatus from "@component/UserStatus";
-import UsersList from "@component/UsersList";
+import UserStatus from "src/component/UserStatus";
+import UsersList from "src/component/UsersList";
 //Icons
 import { Icon } from "@iconify/react";
 import chevronUp from "@iconify-icons/mdi/chevron-up";
@@ -18,21 +18,18 @@ import chevronUp from "@iconify-icons/mdi/chevron-up";
 import firebase from "firebase";
 //hooks
 import { makeStyles } from "@material-ui/core/styles";
-//util
-import { getUsersList } from "@util/getUsrsList";
 //type
-import RegisterPanel from "@component/RegisterPanel";
-import { User } from "@type/User";
+import RegisterPanel from "src/component/RegisterPanel";
+//util
+import { map } from "lodash";
+
+import { User } from "src/types/User";
 
 const drawerWidth = 240;
 
 const SideWindow: React.FC = () => {
   const classes = useStyles();
-
-  const user = useMemo(
-    () => firebase.auth().currentUser,
-    [firebase.auth().currentUser]
-  );
+  const [user, setUser] = useState(firebase.auth().currentUser);
 
   const [allUsers, setUsersList] = useState<User[]>([]);
 
@@ -42,12 +39,25 @@ const SideWindow: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      setUsersList(getUsersList(user.uid));
+      firebase
+        .database()
+        .ref("users")
+        .on("value", (snapshot) => {
+          const usersList = snapshot.val();
+          let data = [];
+          if (usersList) {
+            if (usersList[user.uid]) delete usersList[user.uid];
+            data = map(usersList, (val: any, key: any) => ({
+              uid: key,
+              ...val,
+            }));
+          }
+          setUsersList(data);
+        });
       //set lister to the updated values of database
       const fireRef = firebase.database().ref("users");
       fireRef.on("child_changed", (snapshot) => {
         const newState = { uid: snapshot.key, ...snapshot.val() };
-
         const data = allUsers.map((e) => {
           if (e.uid === newState.uid) return newState;
           else return e;
@@ -56,6 +66,10 @@ const SideWindow: React.FC = () => {
       });
     }
   }, [user]);
+
+  useEffect(() => {
+    setUser(firebase.auth().currentUser);
+  }, [firebase.auth().currentUser]);
 
   useEffect(() => {
     setOpen(mediaQr);
