@@ -1,0 +1,24 @@
+{
+  "name": "@chessy/server",
+  "version": "1.0.0",
+  "description": "",
+  "author": "murhaf elmasri",
+  "license": "ISC",
+  "main": "./src/app.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon"
+  },
+  "dependencies": {
+    "ts-node": "^10.7.0",
+    "socket.io": "^4.5.1",
+    "mongoose": "^6.3.4",
+    "jsonwebtoken": "^8.5.1",
+    "dotenv": "^16.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16",
+    "typescript": "^4.6.4",
+    "@types/jsonwebtoken": "^8.5.8"
+  }
+}

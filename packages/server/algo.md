@@ -1,0 +1,3 @@
+- [ ] check if the json web token valid
+- [ ] add user to map
+- [ ] broadcast message to all user 

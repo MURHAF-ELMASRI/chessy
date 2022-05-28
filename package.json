@@ -1,0 +1,20 @@
+{
+  "name": "chessy",
+  "version": "1.0.0",
+  "description": "realtime chess game",
+  "repository": "git@github.com:MURHAF-ELMASRI/chessy.git",
+  "author": "MURHAF ELMASRI <48405071+MURHAF-ELMASRI@users.noreply.github.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {},
+  "dependencies": {
+    "typescript": "^4.5.4"
+  },
+  "scripts": {
+    "client": "yarn --cwd ./packages/client/ start",
+    "server": "yarn --cwd ./packages/server/ dev"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@chessy/common",
+  "version": "1.0.0",
+  "description": "",
+  "author": "murhaf elmasri",
+  "license": "ISC",
+  "type": "module",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
+}
