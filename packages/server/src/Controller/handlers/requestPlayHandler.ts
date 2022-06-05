@@ -1,30 +1,23 @@
-import { getClientSocket } from "../../util/getClientSocket";
-import RequestPlayParams from "src/@types/params/RequestPlayParams";
-import isObject from "../../util/isObject";
-export default function requestPlayHandler({
-  socket,
-  clients,
-  opponentUID,
-  playerColor,
-}: RequestPlayParams) {
-  if (isObject(socket.opponent))
-    throw new Error(`${socket.opponent.displayName} is busy`);
+import {
+  ClientEvents,
+  RequestPlayPayload,
+} from "packages/common/types/message";
+import { ServerEvents } from "packages/common/types/ServerEvent";
+import { Socket } from "socket.io";
+import { CONNECTED_USERS } from "../../config/configuration";
+import send from "../../send";
 
-  const oppSocket = getClientSocket(clients, opponentUID);
-
-  if (!oppSocket) {
-    throw new Error(`${opponentUID} is not connected`);
+export default function requestPlayHandler(payload: RequestPlayPayload) {
+  // @ts-ignore
+  const socket: Socket<ClientEvents, ServerEvents> = this;
+  const oppUser = CONNECTED_USERS.get(payload.oppId);
+  if (!oppUser) {
+    send(socket, { type: "disconnected", payload: { oppId: payload.oppId } });
+    return;
   }
 
-  oppSocket.opponent = socket;
-  socket.opponent = oppSocket.uid;
-  socket.playerColor = playerColor;
-  
-  oppSocket.send(
-    JSON.stringify({
-      msg: "request-play",
-      displayName: socket.displayName,
-      playerColor,
-    })
-  );
+  send(oppUser.socket, {
+    type: "requestPlay",
+    payload: { _id: socket.id, color: payload.color },
+  });
 }

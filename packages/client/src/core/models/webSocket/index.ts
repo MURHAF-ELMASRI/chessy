@@ -2,7 +2,6 @@ import { Message } from "src/types/Message";
 import encodeMessage from "src/util/encodeMessage";
 import { initializeWebSocket } from "./initializeWebSocket";
 
-import firebase from "firebase";
 import store from "src/core/store/store";
 import { showActionLessNotification } from "src/core/store/reducer/notification";
 
@@ -18,7 +17,7 @@ class webSocketConnection {
       : undefined;
   }
   async connectServer() {
-    this.token = await firebase.auth().currentUser?.getIdToken();
+    
     console.log(this.token);
 
     if (this.token) {
